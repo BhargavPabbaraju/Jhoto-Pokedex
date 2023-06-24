@@ -5,9 +5,9 @@ colors={
 'secondary':[(84,80,77)],
 'gray':[(214,214,214)],
 'pencil':[(245,193,80),(115,93,57)],
-'red':[(255,0,41),(157,0,27),(255,141,159)],
+'red':[(232,48,48),(157,0,27),(255,141,159)],
 'green':[(85,142,54)],
-'white':[(248,248,248)],
+'white':[(248,248,248),(168,168,168)],
 
 }
 
@@ -174,16 +174,43 @@ class BottomBox:
 
         self.draw_circles()
 
+
+class TopInner:
+    def __init__(self,window,x,y,size):
+        self.window = window
+        self.x = x
+        self.y = y
+        self.size = size
+    
+
+    def draw_grid(self):
+        x = self.x + SIZE
+        while x< self.x + SIZE*self.size[0]:
+            pg.draw.line(self.window,colors['white'][1],(x,self.y),(x,self.y+SIZE*self.size[1]-5))
+            x+=SIZE
+
+        y = self.y + SIZE
+        while y< self.y + SIZE*self.size[1]:
+            pg.draw.line(self.window,colors['white'][1],(self.x+2,y),(self.x+SIZE*self.size[0]-3,y))
+            y+=SIZE
+
+    
+    def draw(self):
+
+        self.draw_grid()
         
 
 def draw():
     window.fill(-1)
     X=200
-    Y=-200
+    Y=50
 
     color = colors['primary']
     tb = TopBox(window,X,Y,box_sizes[0],color)
     tb.draw()
+
+    ti = TopInner(window,tb.x+SIZE//2,tb.y+SIZE//2 +2,[tb.size[0]-1,tb.size[1]-1])
+    ti.draw()
 
     bt = BottomBox(window,X,Y+box_sizes[0][1]*2*SIZE+30-4,box_sizes[1])
     bt.draw()
@@ -192,6 +219,10 @@ def draw():
     tb.draw()
 
     bt.draw_pencils()  
+
+
+    
+    
 
     
 def loop():
