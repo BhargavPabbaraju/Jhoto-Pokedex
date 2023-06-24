@@ -5,9 +5,9 @@ colors={
 'secondary':[(84,80,77)],
 'gray':[(214,214,214)],
 'pencil':[(245,193,80),(115,93,57)],
-'red':[(232,48,48),(157,0,27),(255,141,159)],
+'red':[(232,48,48),(248,152,160)],
 'green':[(85,142,54)],
-'white':[(248,248,248),(168,168,168)],
+'white':[(248,248,248),(168,168,168),(88,88,88)],
 
 }
 
@@ -183,6 +183,58 @@ class TopInner:
         self.size = size
     
 
+    def draw_topbar(self):
+        #red bar
+        pg.draw.rect(self.window,colors['red'][0],[self.x,self.y,self.size[0]*SIZE,32],border_top_left_radius=16,border_top_right_radius=16)
+        pg.draw.rect(self.window,(0,0,0),[self.x,self.y,self.size[0]*SIZE,32],width=2,border_top_left_radius=16,border_top_right_radius=16)
+
+        #triangl
+        points=[(self.x+16-4,self.y+8),(self.x+16*2+4,self.y+8),(self.x+8+16,self.y+16+8)]
+        pg.draw.polygon(self.window,colors['white'][0],points)
+        pg.draw.polygon(self.window,colors['white'][1],points,width=2)
+    
+
+    def draw_name_bar(self):
+        x=self.x+SIZE*2
+        y=self.y+SIZE-16
+
+        #red half bar
+        pg.draw.rect(self.window,colors['red'][0],[x,y,3*SIZE-16,32],border_top_left_radius=4,border_top_right_radius=4)
+        pg.draw.rect(self.window,colors['white'][2],[x,y,3*SIZE-16,32],width=2,border_top_left_radius=4,border_top_right_radius=4)
+        
+        #white half bar
+        pg.draw.rect(self.window,colors['white'][0],[x,y+32,3*SIZE-16,32],border_bottom_left_radius=4,border_bottom_right_radius=4)
+        pg.draw.rect(self.window,colors['white'][2],[x,y+32,3*SIZE-16,32],width=2,border_bottom_left_radius=4,border_bottom_right_radius=4)
+        
+        #red in between
+        pg.draw.rect(self.window,colors['red'][1],[x+2,y+32-2,3*SIZE-16-4,4])
+        
+    def draw_pokeball(self):
+        #white bg circle
+        x= self.x+SIZE*2 + 16
+        y= self.y+SIZE-16 + 16
+        circle = draw_circle(14,colors['white'][0])
+        self.window.blit(circle,circle.get_rect(center=(x,y)))
+        circle = draw_circle(12,colors['white'][2])
+        self.window.blit(circle,circle.get_rect(center=(x,y)))
+
+        #red half circle
+        circle = draw_circle(10,colors['red'][0],draw_bottom_left=False,draw_bottom_right=False)
+        self.window.blit(circle,circle.get_rect(center=(x,y)))
+
+        #white half circle
+        circle = draw_circle(10,colors['white'][0],draw_top_left=False,draw_top_right=False)
+        self.window.blit(circle,circle.get_rect(center=(x,y)))
+
+        #grey bar in between
+        pg.draw.rect(self.window,colors['white'][2],[x-10,y-1,20,2])
+
+        circle = draw_circle(4,colors['white'][0])
+        self.window.blit(circle,circle.get_rect(center=(x,y)))
+        circle = draw_circle(4,colors['white'][2],width=2)
+        self.window.blit(circle,circle.get_rect(center=(x,y)))
+        
+
     def draw_grid(self):
         x = self.x + SIZE
         while x< self.x + SIZE*self.size[0]:
@@ -199,6 +251,11 @@ class TopInner:
 
         self.draw_grid()
         
+        self.draw_topbar()
+
+        self.draw_name_bar()
+
+        self.draw_pokeball()
 
 def draw():
     window.fill(-1)
