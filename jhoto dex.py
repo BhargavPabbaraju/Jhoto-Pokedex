@@ -4,10 +4,10 @@ colors={
 'primary':[(219,97,56),(146,64,42)],
 'secondary':[(84,80,77)],
 'gray':[(214,214,214)],
-'white':[(248,248,248),(163,164,164)],
+'pencil':[(245,193,80),(115,93,57)],
 'red':[(255,0,41),(157,0,27),(255,141,159)],
 'green':[(85,142,54)],
-'black':[(35,35,35),(0,49,43)],
+'white':[(248,248,248)],
 
 }
 
@@ -140,12 +140,41 @@ class BottomBox:
 
         circle = draw_circle(SIZE+32+6+2,(0,0,0),width=2)
         self.window.blit(circle,circle.get_rect(center=(x,y)))
+    
+
+    def draw_pencils(self):
+        x=self.x - 16
+        gap = self.size[0]*SIZE+16
+        tl= 12
+        bl = 12
+        tr = 0
+        br = 0
+        for i in range(2):
+            if i==1:
+                tl= 0
+                bl = 0
+                tr = 12
+                br = 12
+            #whole pencil
+            pg.draw.rect(self.window,colors['pencil'][0],[x+gap*i,self.y - SIZE * 5,16,SIZE*6],border_top_left_radius=tl,border_bottom_left_radius=bl,border_top_right_radius=tr,border_bottom_right_radius=br)
+            pg.draw.rect(self.window,(0,0,0),[x+gap*i,self.y - SIZE * 5,16,SIZE*6],width=2,border_top_left_radius=tl,border_bottom_left_radius=bl,border_top_right_radius=tr,border_bottom_right_radius=br)
+            #groove 1
+            pg.draw.rect(self.window,colors['pencil'][1],[x+gap*i,self.y-SIZE*5+32,16,10],border_top_left_radius=tl,border_bottom_left_radius=bl,border_top_right_radius=tr,border_bottom_right_radius=br)
+            pg.draw.rect(self.window,(0,0,0),[x+gap*i,self.y-SIZE*5+32,16,10],width=2,border_top_left_radius=tl,border_bottom_left_radius=bl,border_top_right_radius=tr,border_bottom_right_radius=br)
+            
+            #groove 2
+            pg.draw.rect(self.window,colors['pencil'][1],[x+gap*i,self.y-SIZE*3,16,10],border_top_left_radius=tl,border_bottom_left_radius=bl,border_top_right_radius=tr,border_bottom_right_radius=br)
+            pg.draw.rect(self.window,(0,0,0),[x+gap*i,self.y-SIZE*3,16,10],width=2,border_top_left_radius=tl,border_bottom_left_radius=bl,border_top_right_radius=tr,border_bottom_right_radius=br)
+            #groove 3
+            pg.draw.rect(self.window,colors['pencil'][1],[x+gap*i,self.y-SIZE*3-32,16,10],border_top_left_radius=tl,border_bottom_left_radius=bl,border_top_right_radius=tr,border_bottom_right_radius=br)
+            pg.draw.rect(self.window,(0,0,0),[x+gap*i,self.y-SIZE*3-32,16,10],width=2,border_top_left_radius=tl,border_bottom_left_radius=bl,border_top_right_radius=tr,border_bottom_right_radius=br)
 
     def draw(self):
         self.draw_box()
 
         self.draw_circles()
 
+        
 
 def draw():
     window.fill(-1)
@@ -162,7 +191,7 @@ def draw():
     tb = TopBox(window,X,Y+box_sizes[0][1]*SIZE+32,box_sizes[0],color,top=False)
     tb.draw()
 
-    
+    bt.draw_pencils()  
 
     
 def loop():
