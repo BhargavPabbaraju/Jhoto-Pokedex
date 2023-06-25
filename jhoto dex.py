@@ -3,7 +3,7 @@ import pygame as pg
 colors={
 'primary':[(219,97,56),(146,64,42)],
 'secondary':[(84,80,77)],
-'gray':[(214,214,214)],
+'gray':[(214,214,214),(192,200,208)],
 'pencil':[(245,193,80),(115,93,57)],
 'red':[(232,48,48),(248,152,160)],
 'green':[(85,142,54)],
@@ -191,7 +191,7 @@ class TopInner:
         #triangl
         points=[(self.x+16-4,self.y+8),(self.x+16*2+4,self.y+8),(self.x+8+16,self.y+16+8)]
         pg.draw.polygon(self.window,colors['white'][0],points)
-        pg.draw.polygon(self.window,colors['white'][1],points,width=2)
+        pg.draw.polygon(self.window,colors['white'][2],points,width=2)
     
 
     def draw_name_bar(self):
@@ -246,8 +246,73 @@ class TopInner:
             pg.draw.line(self.window,colors['white'][1],(self.x+2,y),(self.x+SIZE*self.size[0]-3,y))
             y+=SIZE
 
-    
+    def shadows(self):
+        x=self.x+SIZE*2
+        y=self.y+SIZE-16
+
+        #name bar shadow
+        pg.draw.rect(self.window,colors['gray'][1],[x+8,y+8,3*SIZE-16,32+32],border_radius=4)
+
+        #box shadow
+        x=self.x+SIZE*2
+        y=self.y+2*SIZE
+        pg.draw.rect(self.window,colors['gray'][1],[x+8,y+8,SIZE,SIZE],border_radius=4)
+
+        #htwtbar shadow
+        x=self.x+SIZE*2 + SIZE + 16
+        y=self.y+2*SIZE + 32
+        pg.draw.rect(self.window,colors['gray'][1],[x+8,y+8,SIZE+32,32+32],border_radius=4) 
+
+        #dex entry shadow
+        x=self.x+SIZE//2 - 16 - 8
+        y=self.y+4*SIZE - 16
+        pg.draw.rect(self.window,colors['gray'][1],[x+8,y+8,SIZE*4+32+14,SIZE+4],border_radius=4,border_bottom_right_radius=14) 
+        
+    def htwtbar(self):
+        x=self.x+SIZE*2 + SIZE + 16
+        y=self.y+2*SIZE + 32
+
+        #htwtbar
+        pg.draw.rect(self.window,colors['white'][0],[x,y,SIZE+32,32+32],border_radius=4)
+        pg.draw.rect(self.window,colors['white'][2],[x,y,SIZE+32,32+32],width=2,border_radius=4)
+
+        x = self.x+SIZE*2 + SIZE + 16 - 2
+        y=self.y+2*SIZE + 32 + 32
+        gap = 8
+        while x+gap < self.x+SIZE*2 + SIZE + 16 + SIZE+32-2:
+            x+=gap
+            pg.draw.rect(self.window,colors['white'][1],[x,y,4,4])
+            
+
+    def spritebox(self):
+        x=self.x+SIZE*2
+        y=self.y+2*SIZE
+        #spritebox
+        pg.draw.rect(self.window,colors['white'][0],[x,y,SIZE,SIZE],border_radius=4)
+        pg.draw.rect(self.window,colors['white'][2],[x,y,SIZE,SIZE],width=2,border_radius=4)
+
+        #red bars on spritebox
+        pg.draw.rect(self.window,colors['red'][0],[x,y,SIZE,12],border_top_left_radius=4,border_top_right_radius=4)
+        pg.draw.rect(self.window,colors['white'][2],[x,y,SIZE,12],width=2,border_top_left_radius=4,border_top_right_radius=4)
+
+        #light red bar in between
+        pg.draw.rect(self.window,colors['red'][1],[x+2,y+8,SIZE-4,4])
+        
+
+    def dex_entry(self):
+        x=self.x+SIZE//2 - 16 - 8
+        y=self.y+4*SIZE - 16
+        #dex entry red
+        pg.draw.rect(self.window,colors['red'][0],[x,y,SIZE*4+32+16,SIZE+8],border_radius=4)
+        pg.draw.rect(self.window,colors['white'][2],[x,y,SIZE*4+32+16,SIZE+8],width=2,border_radius=4)
+
+        pg.draw.rect(self.window,colors['red'][1],[x+16,y+2,SIZE*4+16,SIZE+4])
+
+        pg.draw.rect(self.window,colors['white'][0],[x+16+2,y+4,SIZE*4+16-4,SIZE])
+
     def draw(self):
+
+        self.shadows()
 
         self.draw_grid()
         
@@ -256,6 +321,12 @@ class TopInner:
         self.draw_name_bar()
 
         self.draw_pokeball()
+
+        self.htwtbar()
+
+        self.spritebox()
+
+        self.dex_entry()
 
 def draw():
     window.fill(-1)
