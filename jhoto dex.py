@@ -1,10 +1,19 @@
 import pygame as pg
 
 colors={
-'primary':[(219,97,56),(146,64,42)],
-'secondary':[(84,80,77)],
-'gray':[(214,214,214),(192,200,208),(200,208,216),(152,168,184)],
+#boy
+#'primary':[(219,97,56),(146,64,42)],
+#girl
+'primary':[(249,239,247),(241,162,196)],
+#boy
+#'secondary':[(84,80,77),(214,214,214)],
+#girl
+'secondary':[(239,142,183),(246,235,243)],
+'gray':[(192,200,208),(200,208,216),(152,168,184)],
+#boy
 'pencil':[(245,193,80),(115,93,57)],
+#girl
+'pencil':[(238,143,182),(169,75,122)],
 'red':[(232,48,48),(248,152,160),(144,16,32),(192,32,40)],
 'green':[(85,142,54)],
 'white':[(248,248,248),(168,168,168),(88,88,88)],
@@ -90,7 +99,7 @@ class TopBox:
         circle = draw_circle(SIZE,(0,0,0),width=2)
         self.window.blit(circle,circle.get_rect(center=(x,y)))
 
-        circle = draw_circle(SIZE-16-8,colors['gray'][0])
+        circle = draw_circle(SIZE-16-8,colors['secondary'][1])
         self.window.blit(circle,circle.get_rect(center=(x,y)))
         circle = draw_circle(SIZE-16-8,(0,0,0),width=2)
         self.window.blit(circle,circle.get_rect(center=(x,y)))
@@ -259,25 +268,25 @@ class TopInner:
         y=self.y+SIZE-16
 
         #name bar shadow
-        pg.draw.rect(self.window,colors['gray'][1],[x+8,y+8,3*SIZE-16,32+32],border_radius=4)
+        pg.draw.rect(self.window,colors['gray'][0],[x+8,y+8,3*SIZE-16,32+32],border_radius=4)
 
         #grid shadow
-        pg.draw.rect(self.window,colors['gray'][1],[self.x+2,self.y+32,self.size[0]*SIZE-4,16])
+        pg.draw.rect(self.window,colors['gray'][0],[self.x+2,self.y+32,self.size[0]*SIZE-4,16])
 
         #box shadow
         x=self.x+SIZE*2
         y=self.y+2*SIZE
-        pg.draw.rect(self.window,colors['gray'][1],[x+8,y+8,SIZE,SIZE],border_radius=4)
+        pg.draw.rect(self.window,colors['gray'][0],[x+8,y+8,SIZE,SIZE],border_radius=4)
 
         #htwtbar shadow
         x=self.x+SIZE*2 + SIZE + 16
         y=self.y+2*SIZE + 32
-        pg.draw.rect(self.window,colors['gray'][1],[x+8,y+8,SIZE+32,32+32],border_radius=4) 
+        pg.draw.rect(self.window,colors['gray'][0],[x+8,y+8,SIZE+32,32+32],border_radius=4) 
 
         #dex entry shadow
         x=self.x+SIZE//2 - 16 - 8
         y=self.y+4*SIZE - 16
-        pg.draw.rect(self.window,colors['gray'][1],[x+8,y+8,SIZE*4+32+14,SIZE+4],border_radius=4,border_bottom_right_radius=14) 
+        pg.draw.rect(self.window,colors['gray'][0],[x+8,y+8,SIZE*4+32+14,SIZE+4],border_radius=4,border_bottom_right_radius=14) 
         
     def htwtbar(self):
         x=self.x+SIZE*2 + SIZE + 16
@@ -403,8 +412,8 @@ class BottomInner:
         y = self.y + SIZE*(self.size[1]-1) - 16 + 8
         for i in range(2):
             pg.draw.rect(self.window,colors['white'][0],[x+gap*i,y,SIZE*2,SIZE-16],border_radius=8)
-            pg.draw.rect(self.window,colors['gray'][3],[x+gap*i,y+16+8,SIZE*2,SIZE-32-8],border_bottom_left_radius=8,border_bottom_right_radius=8)
-            pg.draw.rect(self.window,colors['gray'][2],[x+gap*i,y+16+4+4,SIZE*2,8])
+            pg.draw.rect(self.window,colors['gray'][2],[x+gap*i,y+16+8,SIZE*2,SIZE-32-8],border_bottom_left_radius=8,border_bottom_right_radius=8)
+            pg.draw.rect(self.window,colors['gray'][1],[x+gap*i,y+16+4+4,SIZE*2,8])
         
     def draw(self):
         self.draw_grid()
