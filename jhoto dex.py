@@ -3,11 +3,12 @@ import pygame as pg
 colors={
 'primary':[(219,97,56),(146,64,42)],
 'secondary':[(84,80,77)],
-'gray':[(214,214,214),(192,200,208)],
+'gray':[(214,214,214),(192,200,208),(200,208,216),(152,168,184)],
 'pencil':[(245,193,80),(115,93,57)],
-'red':[(232,48,48),(248,152,160),(114,16,32),(192,32,40)],
+'red':[(232,48,48),(248,152,160),(144,16,32),(192,32,40)],
 'green':[(85,142,54)],
 'white':[(248,248,248),(168,168,168),(88,88,88)],
+'blue':[(72,96,248),(32,48,152),(48,72,200)],
 
 }
 
@@ -185,14 +186,21 @@ class TopInner:
 
     def draw_topbar(self):
         #red bar
-        pg.draw.rect(self.window,colors['red'][0],[self.x,self.y,self.size[0]*SIZE,32],border_top_left_radius=16,border_top_right_radius=16)
-        pg.draw.rect(self.window,(0,0,0),[self.x,self.y,self.size[0]*SIZE,32],width=2,border_top_left_radius=16,border_top_right_radius=16)
+        pg.draw.rect(self.window,colors['red'][0],[self.x+2,self.y,self.size[0]*SIZE-4,32],border_top_left_radius=14,border_top_right_radius=14)
+        pg.draw.line(self.window,(0,0,0),(self.x,self.y+32),(self.x+self.size[0]*SIZE-2,self.y+32),width=4)
 
-        #triangl
+        pg.draw.rect(self.window,colors['red'][2],[self.x+2,self.y,16,31],border_top_left_radius=14)
+        pg.draw.rect(self.window,colors['red'][2],[self.x+self.size[0]*SIZE-16-2,self.y,16,31],border_top_right_radius=14)
+        
+        pg.draw.rect(self.window,colors['red'][3],[self.x+2+16-4,self.y,SIZE*5-32,31],width=4)
+        pg.draw.line(self.window,colors['red'][0],(self.x+2+16,self.y+2),(self.x+2+16-10+SIZE*5-31,self.y+2),width=4)
+
+        #triangle
         points=[(self.x+16-4,self.y+8),(self.x+16*2+4,self.y+8),(self.x+8+16,self.y+16+8)]
         pg.draw.polygon(self.window,colors['white'][0],points)
         pg.draw.polygon(self.window,colors['white'][2],points,width=2)
-    
+
+        
 
     def draw_name_bar(self):
         x=self.x+SIZE*2
@@ -365,11 +373,11 @@ class BottomInner:
         points=[(x+12,y),(x+12,y+SIZE-8),(x,y+SIZE),(x,y)]
         #the wedge to the right
         pg.draw.polygon(self.window,colors['red'][2],points)
-        pg.draw.line(self.window,(0,0,0),points[1],points[2],width=2)
+        pg.draw.line(self.window,(0,0,0),points[1],points[2],width=4)
 
         #wedge outline
-        pg.draw.line(self.window,(0,0,0),points[0],points[1],width=2)
-        pg.draw.line(self.window,(0,0,0),points[2],(x,y+SIZE*5 - 4),width=2)
+        pg.draw.line(self.window,(0,0,0),points[0],points[1],width=4)
+        pg.draw.line(self.window,(0,0,0),points[2],(x,y+SIZE*5 - 4),width=4)
 
         #black triangle
         x = self.x +  8
@@ -377,11 +385,35 @@ class BottomInner:
         points=[(x,y-12),(x,y+12),(x+x//2,y)]
         pg.draw.polygon(self.window,(0,0,0),points)
         pg.draw.polygon(self.window,colors['white'][0],points,width=2)
+    
 
+    def bottom_bar(self):
+        x = self.x + 2
+        y = self.y + SIZE*(self.size[1]-1) - 16
+        pg.draw.rect(self.window,colors['blue'][0],[x,y,SIZE*self.size[0]-4,SIZE])
+        pg.draw.line(self.window,(0,0,0),(x,y),(x+SIZE*self.size[0]-4,y),width=4)
+        pg.draw.line(self.window,(0,0,0),(x,y+SIZE),(x+SIZE*self.size[0]-4,y+SIZE),width=4)
+
+        pg.draw.rect(self.window,colors['blue'][1],[x,y+32+8,SIZE*self.size[0]-4,SIZE-32-8])
+        pg.draw.rect(self.window,colors['blue'][2],[x,y+32,SIZE*self.size[0]-4,8])
+
+    def buttons(self):
+        gap = SIZE*3 - 16 - 4
+        x = self.x + 2 + 8
+        y = self.y + SIZE*(self.size[1]-1) - 16 + 8
+        for i in range(2):
+            pg.draw.rect(self.window,colors['white'][0],[x+gap*i,y,SIZE*2,SIZE-16],border_radius=8)
+            pg.draw.rect(self.window,colors['gray'][3],[x+gap*i,y+16+8,SIZE*2,SIZE-32-8],border_bottom_left_radius=8,border_bottom_right_radius=8)
+            pg.draw.rect(self.window,colors['gray'][2],[x+gap*i,y+16+4+4,SIZE*2,8])
+        
     def draw(self):
         self.draw_grid()
 
         self.side_bar()
+
+        self.bottom_bar()
+
+        self.buttons()
 
 def draw():
     window.fill(-1)
