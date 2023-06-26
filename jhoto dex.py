@@ -5,7 +5,7 @@ colors={
 'secondary':[(84,80,77)],
 'gray':[(214,214,214),(192,200,208)],
 'pencil':[(245,193,80),(115,93,57)],
-'red':[(232,48,48),(248,152,160)],
+'red':[(232,48,48),(248,152,160),(114,16,32),(192,32,40)],
 'green':[(85,142,54)],
 'white':[(248,248,248),(168,168,168),(88,88,88)],
 
@@ -15,8 +15,8 @@ SIZE = 64
 
 box_sizes = [[6,6],[6,2]]
 
-WIDTH = 800
-HEIGHT = 800
+WIDTH = box_sizes[0][0]*SIZE + 16*2
+HEIGHT = box_sizes[0][1]*SIZE*2 + box_sizes[1][1]*SIZE + 32 - 6 + SIZE
 pg.init()
 window = pg.display.set_mode((WIDTH,HEIGHT),pg.SRCALPHA)
 
@@ -253,6 +253,9 @@ class TopInner:
         #name bar shadow
         pg.draw.rect(self.window,colors['gray'][1],[x+8,y+8,3*SIZE-16,32+32],border_radius=4)
 
+        #grid shadow
+        pg.draw.rect(self.window,colors['gray'][1],[self.x+2,self.y+32,self.size[0]*SIZE-4,16])
+
         #box shadow
         x=self.x+SIZE*2
         y=self.y+2*SIZE
@@ -328,10 +331,62 @@ class TopInner:
 
         self.dex_entry()
 
+
+class BottomInner:
+    def __init__(self,window,x,y,size):
+        self.window = window
+        self.x = x
+        self.y = y
+        self.size = size
+    
+    def draw_grid(self):
+        x = self.x + SIZE
+        while x< self.x + SIZE*self.size[0]:
+            pg.draw.line(self.window,colors['white'][1],(x,self.y),(x,self.y+SIZE*self.size[1]-5))
+            x+=SIZE
+
+        y = self.y + SIZE
+        while y< self.y + SIZE*self.size[1]:
+            pg.draw.line(self.window,colors['white'][1],(self.x+2,y),(self.x+SIZE*self.size[0]-3,y))
+            y+=SIZE
+        
+        
+    def side_bar(self):
+        #red side bar
+        x = self.x + 2
+        y = self.y
+        pg.draw.rect(self.window,colors['red'][2],[x,y,SIZE,SIZE*self.size[1]-4],border_top_left_radius=14,border_bottom_left_radius=14)
+
+        pg.draw.rect(self.window,colors['red'][0],[x,y,SIZE//2+8,SIZE*self.size[1]-4],border_top_left_radius=14,border_bottom_left_radius=14)
+
+        pg.draw.rect(self.window,colors['red'][3],[x+SIZE//2,y,8,SIZE*self.size[1]-4])
+
+        x = self.x + SIZE
+        points=[(x+12,y),(x+12,y+SIZE-8),(x,y+SIZE),(x,y)]
+        #the wedge to the right
+        pg.draw.polygon(self.window,colors['red'][2],points)
+        pg.draw.line(self.window,(0,0,0),points[1],points[2],width=2)
+
+        #wedge outline
+        pg.draw.line(self.window,(0,0,0),points[0],points[1],width=2)
+        pg.draw.line(self.window,(0,0,0),points[2],(x,y+SIZE*5 - 4),width=2)
+
+        #black triangle
+        x = self.x +  8
+        y = self.y + 16 + 4
+        points=[(x,y-12),(x,y+12),(x+x//2,y)]
+        pg.draw.polygon(self.window,(0,0,0),points)
+        pg.draw.polygon(self.window,colors['white'][0],points,width=2)
+
+    def draw(self):
+        self.draw_grid()
+
+        self.side_bar()
+
 def draw():
     window.fill(-1)
-    X=200
-    Y=50
+    X=16
+    Y= SIZE
 
     color = colors['primary']
     tb = TopBox(window,X,Y,box_sizes[0],color)
@@ -347,7 +402,9 @@ def draw():
     tb.draw()
 
     bt.draw_pencils()  
-
+    
+    bi = BottomInner(window,tb.x+SIZE//2,tb.y+SIZE//2+2,[tb.size[0]-1,tb.size[1]-1])
+    bi.draw()
 
     
     
@@ -357,6 +414,8 @@ def loop():
     while True:
         for event in pg.event.get():
             if event.type == pg.QUIT:
+                window.convert_alpha()
+
                 pg.image.save(window,'image.png')
                 pg.quit()
                 return
